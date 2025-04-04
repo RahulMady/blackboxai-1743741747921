@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports | Forest Monitoring</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="app.js"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-green-800 text-white p-4 shadow-md">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <i class="fas fa-tree text-2xl"></i>
+                    <h1 class="text-xl font-bold">Forest Monitoring System</h1>
+                </div>
+                <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
+                    <div class="flex space-x-1">
+                        <a href="dashboard.html" class="px-3 py-1 hover:bg-green-700 rounded-md text-sm transition">
+                            <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
+                        </a>
+                        <a href="data-visualization.html" class="px-3 py-1 hover:bg-green-700 rounded-md text-sm transition">
+                            <i class="fas fa-chart-line mr-1"></i> Data
+                        </a>
+                        <a href="alerts.html" class="px-3 py-1 hover:bg-green-700 rounded-md text-sm transition">
+                            <i class="fas fa-bell mr-1"></i> Alerts
+                        </a>
+                        <a href="reports.html" class="px-3 py-1 bg-green-700 rounded-md text-sm transition">
+                            <i class="fas fa-file-alt mr-1"></i> Reports
+                        </a>
+                        <a href="settings.html" class="px-3 py-1 hover:bg-green-700 rounded-md text-sm transition">
+                            <i class="fas fa-cog mr-1"></i> Settings
+                        </a>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span id="user-role" class="bg-green-600 px-3 py-1 rounded-full text-sm"></span>
+                        <button id="logout-btn" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm transition">
+                            <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto p-4">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Reports & Logs</h2>
+        
+        <!-- Sensor Logs -->
+        <div class="bg-white rounded-lg shadow p-4 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Sensor Logs</h3>
+                <div class="flex space-x-2">
+                    <select class="border rounded-md px-3 py-1 text-sm">
+                        <option>All Sensors</option>
+                        <option>Temperature</option>
+                        <option>Gas Level</option>
+                        <option>Noise</option>
+                        <option>Motion</option>
+                    </select>
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm transition">
+                        <i class="fas fa-download mr-1"></i> Export
+                    </button>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b text-left">Timestamp</th>
+                            <th class="py-2 px-4 border-b text-left">Sensor</th>
+                            <th class="py-2 px-4 border-b text-left">Value</th>
+                            <th class="py-2 px-4 border-b text-left">Status</th>
+                            <th class="py-2 px-4 border-b text-left">Location</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sensor-logs">
+                        <!-- Sample logs - these would be dynamically generated in a real app -->
+                        <tr>
+                            <td class="py-2 px-4 border-b">2025-04-04 04:45:32</td>
+                            <td class="py-2 px-4 border-b">Temperature</td>
+                            <td class="py-2 px-4 border-b">42.5°C</td>
+                            <td class="py-2 px-4 border-b">
+                                <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">Alert</span>
+                            </td>
+                            <td class="py-2 px-4 border-b">Zone B</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="py-2 px-4 border-b">2025-04-04 04:45:30</td>
+                            <td class="py-2 px-4 border-b">Gas Level</td>
+                            <td class="py-2 px-4 border-b">0.76ppm</td>
+                            <td class="py-2 px-4 border-b">
+                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Warning</span>
+                            </td>
+                            <td class="py-2 px-4 border-b">Zone C</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-4 border-b">2025-04-04 04:45:28</td>
+                            <td class="py-2 px-4 border-b">Noise</td>
+                            <td class="py-2 px-4 border-b">72dB</td>
+                            <td class="py-2 px-4 border-b">
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Normal</span>
+                            </td>
+                            <td class="py-2 px-4 border-b">Zone A</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="py-2 px-4 border-b">2025-04-04 04:45:25</td>
+                            <td class="py-2 px-4 border-b">Motion</td>
+                            <td class="py-2 px-4 border-b">Detected</td>
+                            <td class="py-2 px-4 border-b">
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">Event</span>
+                            </td>
+                            <td class="py-2 px-4 border-b">Zone A</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="flex justify-between items-center mt-4">
+                <div class="text-sm text-gray-500">Showing 1 to 4 of 128 entries</div>
+                <div class="flex space-x-1">
+                    <button class="px-3 py-1 border rounded-md bg-gray-100 text-gray-700">&laquo;</button>
+                    <button class="px-3 py-1 border rounded-md bg-green-600 text-white">1</button>
+                    <button class="px-3 py-1 border rounded-md hover:bg-gray-100">2</button>
+                    <button class="px-3 py-1 border rounded-md hover:bg-gray-100">3</button>
+                    <button class="px-3 py-1 border rounded-md hover:bg-gray-100">&raquo;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Incident History -->
+        <div class="bg-white rounded-lg shadow p-4">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Incident History</h3>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b text-left">Date</th>
+                            <th class="py-2 px-4 border-b text-left">Type</th>
+                            <th class="py-2 px-4 border-b text-left">Location</th>
+                            <th class="py-2 px-4 border-b text-left">Severity</th>
+                            <th class="py-2 px-4 border-b text-left">Status</th>
+                            <th class="py-2 px-4 border-b text-left">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="incident-history">
+                        <!-- Sample incidents - these would be dynamically generated in a real app -->
+                        <tr>
+                            <td class="py-2 px-4 border-b">2025-04-03</td>
+                            <td class="py-2 px-4 border-b">Fire</td>
+                            <td class="py-2 px-4 border-b">Zone B</td>
+                            <td class="py-2 px-4 border-b">
+                                <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">Critical</span>
+                            </td>
+                            <td class="py-2 px-4 border-b">
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Resolved</span>
+                            </td>
+                            <td class="py-2 px-4 border-b">
+                                <button class="text-blue-500 hover:text-blue-700 mr-2">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-gray-500 hover:text-gray-700">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="py-2 px-4 border-b">2025-04-02</td>
+                            <td class="py-2 px-4 border-b">Gas Leak</td>
+                            <td class="py-2 px-4 border-b">Zone C</td>
+                            <td class="py-2 px-4 border-b">
+                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">High</span>
+                            </td>
+                            <td class="py-2 px-4 border-b">
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Resolved</span>
+                            </td>
+                            <td class="py-2 px-4 border-b">
+                                <button class="text-blue-500 hover:text-blue-700 mr-2">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-gray-500 hover:text-gray-700">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-4 border-b">2025-04-01</td>
+                            <td class="py-2 px-4 border-b">Unauthorized Access</td>
+                            <td class="py-2 px-4 border-b">Zone A</td>
+                            <td class="py-2 px-4 border-b">
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">Medium</span>
+                            </td>
+                            <td class="py-2 px-4 border-b">
+                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Investigating</span>
+                            </td>
+                            <td class="py-2 px-4 border-b">
+                                <button class="text-blue-500 hover:text-blue-700 mr-2">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-gray-500 hover:text-gray-700">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize user info
+            initUserInfo();
+            setupLogout();
+        });
+    </script>
+</body>
+</html>
