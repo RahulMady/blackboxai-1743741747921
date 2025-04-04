@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Visualization | Forest Monitoring</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-green-800 text-white p-4 shadow-md">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <i class="fas fa-tree text-2xl"></i>
+                    <h1 class="text-xl font-bold">Forest Monitoring System</h1>
+                </div>
+                <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
+                    <div class="flex space-x-1">
+                        <a href="dashboard.html" class="px-3 py-1 hover:bg-green-700 rounded-md text-sm transition">
+                            <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
+                        </a>
+                        <a href="data-visualization.html" class="px-3 py-1 bg-green-700 rounded-md text-sm transition">
+                            <i class="fas fa-chart-line mr-1"></i> Data
+                        </a>
+                        <a href="alerts.html" class="px-3 py-1 hover:bg-green-700 rounded-md text-sm transition">
+                            <i class="fas fa-bell mr-1"></i> Alerts
+                        </a>
+                        <a href="reports.html" class="px-3 py-1 hover:bg-green-700 rounded-md text-sm transition">
+                            <i class="fas fa-file-alt mr-1"></i> Reports
+                        </a>
+                        <a href="settings.html" class="px-3 py-1 hover:bg-green-700 rounded-md text-sm transition">
+                            <i class="fas fa-cog mr-1"></i> Settings
+                        </a>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span id="user-role" class="bg-green-600 px-3 py-1 rounded-full text-sm"></span>
+                        <button id="logout-btn" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm transition">
+                            <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto p-4">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Data Visualization</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- Temperature Chart -->
+            <div class="bg-white rounded-lg shadow p-4">
+                <h3 class="font-bold text-gray-700 mb-4">Temperature Trends (24h)</h3>
+                <canvas id="tempChart" height="300"></canvas>
+            </div>
+
+            <!-- Gas Level Chart -->
+            <div class="bg-white rounded-lg shadow p-4">
+                <h3 class="font-bold text-gray-700 mb-4">Gas Level Trends (7d)</h3>
+                <canvas id="gasChart" height="300"></canvas>
+            </div>
+
+            <!-- Noise Level Chart -->
+            <div class="bg-white rounded-lg shadow p-4">
+                <h3 class="font-bold text-gray-700 mb-4">Noise Level Trends (7d)</h3>
+                <canvas id="noiseChart" height="300"></canvas>
+            </div>
+
+            <!-- Motion Detection Chart -->
+            <div class="bg-white rounded-lg shadow p-4">
+                <h3 class="font-bold text-gray-700 mb-4">Motion Detection (7d)</h3>
+                <canvas id="motionChart" height="300"></canvas>
+            </div>
+        </div>
+
+        <!-- Historical Data Section -->
+        <div class="bg-white rounded-lg shadow p-4 mb-6">
+            <h3 class="font-bold text-gray-700 mb-4">Historical Data</h3>
+            <div class="flex flex-col md:flex-row gap-4 mb-4">
+                <div class="w-full md:w-1/3">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="date-from">From</label>
+                    <input type="date" id="date-from" class="w-full px-3 py-2 border rounded-md">
+                </div>
+                <div class="w-full md:w-1/3">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="date-to">To</label>
+                    <input type="date" id="date-to" class="w-full px-3 py-2 border rounded-md">
+                </div>
+                <div class="w-full md:w-1/3 flex items-end">
+                    <button id="load-data" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700">
+                        Load Data
+                    </button>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b">Date</th>
+                            <th class="py-2 px-4 border-b">Temperature</th>
+                            <th class="py-2 px-4 border-b">Gas Level</th>
+                            <th class="py-2 px-4 border-b">Noise</th>
+                            <th class="py-2 px-4 border-b">Motion</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-data">
+                        <!-- Data will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize user info
+            initUserInfo();
+            setupLogout();
+
+            // Initialize charts
+            initCharts();
+            
+            // Load sample historical data
+            loadHistoricalData();
+        });
+
+        function initCharts() {
+            // Temperature Chart
+            const tempCtx = document.getElementById('tempChart').getContext('2d');
+            new Chart(tempCtx, {
+                type: 'line',
+                data: {
+                    labels: Array(24).fill().map((_, i) => `${i}:00`),
+                    datasets: [{
+                        label: 'Temperature (°C)',
+                        data: Array(24).fill().map(() => Math.floor(Math.random() * 50)),
+                        borderColor: 'rgb(239, 68, 68)',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Gas Level Chart
+            const gasCtx = document.getElementById('gasChart').getContext('2d');
+            new Chart(gasCtx, {
+                type: 'bar',
+                data: {
+                    labels: Array(7).fill().map((_, i) => `Day ${i+1}`),
+                    datasets: [{
+                        label: 'Gas Level (ppm)',
+                        data: Array(7).fill().map(() => Math.random().toFixed(2)),
+                        backgroundColor: 'rgba(234, 179, 8, 0.7)',
+                        borderColor: 'rgba(234, 179, 8, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 1
+                        }
+                    }
+                }
+            });
+
+            // Noise Level Chart
+            const noiseCtx = document.getElementById('noiseChart').getContext('2d');
+            new Chart(noiseCtx, {
+                type: 'line',
+                data: {
+                    labels: Array(7).fill().map((_, i) => `Day ${i+1}`),
+                    datasets: [{
+                        label: 'Noise Level (dB)',
+                        data: Array(7).fill().map(() => Math.floor(Math.random() * 100)),
+                        borderColor: 'rgb(59, 130, 246)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Motion Detection Chart
+            const motionCtx = document.getElementById('motionChart').getContext('2d');
+            new Chart(motionCtx, {
+                type: 'bar',
+                data: {
+                    labels: Array(7).fill().map((_, i) => `Day ${i+1}`),
+                    datasets: [{
+                        label: 'Motion Detected',
+                        data: Array(7).fill().map(() => Math.floor(Math.random() * 10)),
+                        backgroundColor: 'rgba(124, 58, 237, 0.7)',
+                        borderColor: 'rgba(124, 58, 237, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function loadHistoricalData() {
+            const tableBody = document.getElementById('history-data');
+            const days = 30;
+            
+            // Generate sample data for the last 30 days
+            for (let i = 0; i < days; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                
+                const row = document.createElement('tr');
+                row.className = i % 2 === 0 ? 'bg-gray-50' : 'bg-white';
+                row.innerHTML = `
+                    <td class="py-2 px-4 border-b">${date.toLocaleDateString()}</td>
+                    <td class="py-2 px-4 border-b">${Math.floor(Math.random() * 50)}°C</td>
+                    <td class="py-2 px-4 border-b">${Math.random().toFixed(2)}ppm</td>
+                    <td class="py-2 px-4 border-b">${Math.floor(Math.random() * 100)}dB</td>
+                    <td class="py-2 px-4 border-b">${Math.random() > 0.7 ? 'Yes' : 'No'}</td>
+                `;
+                tableBody.appendChild(row);
+            }
+        }
+    </script>
+</body>
+</html>
