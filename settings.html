@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forest Monitoring System - Settings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-green-800 text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-tree text-2xl"></i>
+                <h1 class="text-xl font-bold">Forest Monitoring System</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span id="user-role" class="bg-green-600 px-3 py-1 rounded-full text-sm"></span>
+                <button id="logout-btn" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm transition">
+                    <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto p-4">
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <!-- Settings Tabs -->
+            <div class="flex border-b">
+                <button id="profile-tab" class="flex-1 py-4 px-6 font-medium text-center text-white bg-green-600">Profile</button>
+                <button id="thresholds-tab" class="flex-1 py-4 px-6 font-medium text-center text-gray-700 bg-gray-200">Sensor Thresholds</button>
+            </div>
+
+            <!-- Profile Settings -->
+            <div id="profile-settings" class="p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">Profile Settings</h2>
+                <form id="profile-form">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="profile-name">Name</label>
+                        <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" 
+                               id="profile-name" type="text" placeholder="Enter your name">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="profile-email">Email</label>
+                        <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" 
+                               id="profile-email" type="email" placeholder="Enter your email" readonly>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="profile-role">Role</label>
+                        <input class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 focus:outline-none" 
+                               id="profile-role" type="text" readonly>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="profile-password">Change Password</label>
+                        <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" 
+                               id="profile-password" type="password" placeholder="Enter new password">
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-300">
+                        Save Profile Changes
+                    </button>
+                </form>
+            </div>
+
+            <!-- Threshold Settings -->
+            <div id="threshold-settings" class="p-6 hidden">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">Sensor Threshold Configuration</h2>
+                <form id="threshold-form">
+                    <!-- Temperature Thresholds -->
+                    <div class="mb-6">
+                        <h3 class="font-bold text-gray-700 mb-4">Temperature (°C)</h3>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="temp-warning">Warning Threshold</label>
+                            <input class="w-full" type="range" id="temp-warning" min="20" max="50" value="35" step="1">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>20°C</span>
+                                <span id="temp-warning-value">35°C</span>
+                                <span>50°C</span>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="temp-danger">Danger Threshold</label>
+                            <input class="w-full" type="range" id="temp-danger" min="20" max="50" value="40" step="1">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>20°C</span>
+                                <span id="temp-danger-value">40°C</span>
+                                <span>50°C</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gas Level Thresholds -->
+                    <div class="mb-6">
+                        <h3 class="font-bold text-gray-700 mb-4">Gas Level (ppm)</h3>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="gas-warning">Warning Threshold</label>
+                            <input class="w-full" type="range" id="gas-warning" min="0" max="1" value="0.5" step="0.01">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>0 ppm</span>
+                                <span id="gas-warning-value">0.5 ppm</span>
+                                <span>1 ppm</span>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="gas-danger">Danger Threshold</label>
+                            <input class="w-full" type="range" id="gas-danger" min="0" max="1" value="0.8" step="0.01">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>0 ppm</span>
+                                <span id="gas-danger-value">0.8 ppm</span>
+                                <span>1 ppm</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Noise Level Thresholds -->
+                    <div class="mb-6">
+                        <h3 class="font-bold text-gray-700 mb-4">Noise Level (dB)</h3>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="noise-warning">Warning Threshold</label>
+                            <input class="w-full" type="range" id="noise-warning" min="30" max="100" value="70" step="1">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>30 dB</span>
+                                <span id="noise-warning-value">70 dB</span>
+                                <span>100 dB</span>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="noise-danger">Danger Threshold</label>
+                            <input class="w-full" type="range" id="noise-danger" min="30" max="100" value="85" step="1">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>30 dB</span>
+                                <span id="noise-danger-value">85 dB</span>
+                                <span>100 dB</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-300">
+                        Save Threshold Settings
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        document.addEventListener('DOMContentLoaded', () => {
+            const userEmail = localStorage.getItem('userEmail');
+            const userRole = localStorage.getItem('userRole');
+            
+            if (!userEmail) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Set user role badge
+            document.getElementById('user-role').textContent = 
+                userRole === 'admin' ? 'Admin' : 'Forest Officer';
+
+            // Set profile info
+            document.getElementById('profile-email').value = userEmail;
+            document.getElementById('profile-role').value = 
+                userRole === 'admin' ? 'Administrator' : 'Forest Officer';
+
+            // Load saved thresholds or use defaults
+            loadThresholdSettings();
+
+            // Tab switching
+            document.getElementById('profile-tab').addEventListener('click', () => {
+                document.getElementById('profile-settings').classList.remove('hidden');
+                document.getElementById('threshold-settings').classList.add('hidden');
+                document.getElementById('profile-tab').classList.add('bg-green-600', 'text-white');
+                document.getElementById('profile-tab').classList.remove('bg-gray-200', 'text-gray-700');
+                document.getElementById('thresholds-tab').classList.add('bg-gray-200', 'text-gray-700');
+                document.getElementById('thresholds-tab').classList.remove('bg-green-600', 'text-white');
+            });
+
+            document.getElementById('thresholds-tab').addEventListener('click', () => {
+                document.getElementById('threshold-settings').classList.remove('hidden');
+                document.getElementById('profile-settings').classList.add('hidden');
+                document.getElementById('thresholds-tab').classList.add('bg-green-600', 'text-white');
+                document.getElementById('thresholds-tab').classList.remove('bg-gray-200', 'text-gray-700');
+                document.getElementById('profile-tab').classList.add('bg-gray-200', 'text-gray-700');
+                document.getElementById('profile-tab').classList.remove('bg-green-600', 'text-white');
+            });
+
+            // Logout button
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userRole');
+                window.location.href = 'index.html';
+            });
+
+            // Update slider values in real-time
+            document.getElementById('temp-warning').addEventListener('input', (e) => {
+                document.getElementById('temp-warning-value').textContent = `${e.target.value}°C`;
+            });
+            document.getElementById('temp-danger').addEventListener('input', (e) => {
+                document.getElementById('temp-danger-value').textContent = `${e.target.value}°C`;
+            });
+            document.getElementById('gas-warning').addEventListener('input', (e) => {
+                document.getElementById('gas-warning-value').textContent = `${e.target.value} ppm`;
+            });
+            document.getElementById('gas-danger').addEventListener('input', (e) => {
+                document.getElementById('gas-danger-value').textContent = `${e.target.value} ppm`;
+            });
+            document.getElementById('noise-warning').addEventListener('input', (e) => {
+                document.getElementById('noise-warning-value').textContent = `${e.target.value} dB`;
+            });
+            document.getElementById('noise-danger').addEventListener('input', (e) => {
+                document.getElementById('noise-danger-value').textContent = `${e.target.value} dB`;
+            });
+
+            // Form submissions
+            document.getElementById('profile-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('profile-name').value;
+                const password = document.getElementById('profile-password').value;
+                
+                if (password) {
+                    // In a real app, you would hash and store the password securely
+                    alert('Profile changes saved successfully!');
+                } else if (name) {
+                    alert('Profile changes saved successfully!');
+                } else {
+                    alert('No changes to save.');
+                }
+            });
+
+            document.getElementById('threshold-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                saveThresholdSettings();
+                alert('Threshold settings saved successfully!');
+            });
+        });
+
+        // Load threshold settings from localStorage
+        function loadThresholdSettings() {
+            const thresholds = JSON.parse(localStorage.getItem('thresholdSettings')) || {
+                tempWarning: 35,
+                tempDanger: 40,
+                gasWarning: 0.5,
+                gasDanger: 0.8,
+                noiseWarning: 70,
+                noiseDanger: 85
+            };
+
+            // Set slider values
+            document.getElementById('temp-warning').value = thresholds.tempWarning;
+            document.getElementById('temp-danger').value = thresholds.tempDanger;
+            document.getElementById('gas-warning').value = thresholds.gasWarning;
+            document.getElementById('gas-danger').value = thresholds.gasDanger;
+            document.getElementById('noise-warning').value = thresholds.noiseWarning;
+            document.getElementById('noise-danger').value = thresholds.noiseDanger;
+
+            // Update displayed values
+            document.getElementById('temp-warning-value').textContent = `${thresholds.tempWarning}°C`;
+            document.getElementById('temp-danger-value').textContent = `${thresholds.tempDanger}°C`;
+            document.getElementById('gas-warning-value').textContent = `${thresholds.gasWarning} ppm`;
+            document.getElementById('gas-danger-value').textContent = `${thresholds.gasDanger} ppm`;
+            document.getElementById('noise-warning-value').textContent = `${thresholds.noiseWarning} dB`;
+            document.getElementById('noise-danger-value').textContent = `${thresholds.noiseDanger} dB`;
+        }
+
+        // Save threshold settings to localStorage
+        function saveThresholdSettings() {
+            const thresholds = {
+                tempWarning: parseInt(document.getElementById('temp-warning').value),
+                tempDanger: parseInt(document.getElementById('temp-danger').value),
+                gasWarning: parseFloat(document.getElementById('gas-warning').value),
+                gasDanger: parseFloat(document.getElementById('gas-danger').value),
+                noiseWarning: parseInt(document.getElementById('noise-warning').value),
+                noiseDanger: parseInt(document.getElementById('noise-danger').value)
+            };
+
+            localStorage.setItem('thresholdSettings', JSON.stringify(thresholds));
+        }
+    </script>
+</body>
+</html>
