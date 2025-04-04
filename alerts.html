@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerts | Forest Monitoring</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="app.js"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-green-800 text-white p-4 shadow-md">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <i class="fas fa-tree text-2xl"></i>
+                    <h1 class="text-xl font-bold">Forest Monitoring System</h1>
+                </div>
+                <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
+                    <div class="flex space-x-1">
+                        <a href="dashboard.html" class="px-3 py-1 hover:bg-green-700 rounded-md text-sm transition">
+                            <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
+                        </a>
+                        <a href="data-visualization.html" class="px-3 py-1 hover:bg-green-700 rounded-md text-sm transition">
+                            <i class="fas fa-chart-line mr-1"></i> Data
+                        </a>
+                        <a href="alerts.html" class="px-3 py-1 bg-green-700 rounded-md text-sm transition">
+                            <i class="fas fa-bell mr-1"></i> Alerts
+                        </a>
+                        <a href="reports.html" class="px-3 py-1 hover:bg-green-700 rounded-md text-sm transition">
+                            <i class="fas fa-file-alt mr-1"></i> Reports
+                        </a>
+                        <a href="settings.html" class="px-3 py-1 hover:bg-green-700 rounded-md text-sm transition">
+                            <i class="fas fa-cog mr-1"></i> Settings
+                        </a>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span id="user-role" class="bg-green-600 px-3 py-1 rounded-full text-sm"></span>
+                        <button id="logout-btn" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm transition">
+                            <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto p-4">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Alerts & Notifications</h2>
+        
+        <!-- Emergency Alerts -->
+        <div class="bg-white rounded-lg shadow p-4 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Emergency Alerts</h3>
+                <button id="clear-alerts" class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded text-sm transition">
+                    <i class="fas fa-trash-alt mr-1"></i> Clear All
+                </button>
+            </div>
+            
+            <div class="space-y-3" id="emergency-alerts">
+                <!-- Sample alerts - these would be dynamically generated in a real app -->
+                <div class="border-l-4 border-red-500 bg-red-50 p-3 flex justify-between items-center">
+                    <div>
+                        <div class="font-semibold text-red-800">Fire Detected</div>
+                        <div class="text-sm text-gray-600">Zone B - High temperature (48°C)</div>
+                        <div class="text-xs text-gray-500 mt-1">10 minutes ago</div>
+                    </div>
+                    <button class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-check"></i> Acknowledge
+                    </button>
+                </div>
+                
+                <div class="border-l-4 border-yellow-500 bg-yellow-50 p-3 flex justify-between items-center">
+                    <div>
+                        <div class="font-semibold text-yellow-800">Smoke Detected</div>
+                        <div class="text-sm text-gray-600">Zone C - High gas level (0.87ppm)</div>
+                        <div class="text-xs text-gray-500 mt-1">25 minutes ago</div>
+                    </div>
+                    <button class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-check"></i> Acknowledge
+                    </button>
+                </div>
+                
+                <div class="border-l-4 border-blue-500 bg-blue-50 p-3 flex justify-between items-center">
+                    <div>
+                        <div class="font-semibold text-blue-800">Unauthorized Access</div>
+                        <div class="text-sm text-gray-600">Zone A - Motion detected</div>
+                        <div class="text-xs text-gray-500 mt-1">1 hour ago</div>
+                    </div>
+                    <button class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-check"></i> Acknowledge
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Log -->
+        <div class="bg-white rounded-lg shadow p-4">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Notification Log</h3>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b text-left">Time</th>
+                            <th class="py-2 px-4 border-b text-left">Type</th>
+                            <th class="py-2 px-4 border-b text-left">Recipient</th>
+                            <th class="py-2 px-4 border-b text-left">Status</th>
+                            <th class="py-2 px-4 border-b text-left">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="notification-log">
+                        <!-- Sample notifications - these would be dynamically generated in a real app -->
+                        <tr>
+                            <td class="py-2 px-4 border-b">2025-04-04 04:30</td>
+                            <td class="py-2 px-4 border-b">Fire Alert</td>
+                            <td class="py-2 px-4 border-b">admin@example.com</td>
+                            <td class="py-2 px-4 border-b">
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Delivered</span>
+                            </td>
+                            <td class="py-2 px-4 border-b">
+                                <button class="text-blue-500 hover:text-blue-700 mr-2">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                                <button class="text-gray-500 hover:text-gray-700">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="py-2 px-4 border-b">2025-04-04 04:15</td>
+                            <td class="py-2 px-4 border-b">Smoke Alert</td>
+                            <td class="py-2 px-4 border-b">officer@example.com</td>
+                            <td class="py-2 px-4 border-b">
+                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Pending</span>
+                            </td>
+                            <td class="py-2 px-4 border-b">
+                                <button class="text-blue-500 hover:text-blue-700 mr-2">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                                <button class="text-gray-500 hover:text-gray-700">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-4 border-b">2025-04-04 03:45</td>
+                            <td class="py-2 px-4 border-b">Motion Alert</td>
+                            <td class="py-2 px-4 border-b">+1234567890</td>
+                            <td class="py-2 px-4 border-b">
+                                <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">Failed</span>
+                            </td>
+                            <td class="py-2 px-4 border-b">
+                                <button class="text-blue-500 hover:text-blue-700 mr-2">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                                <button class="text-gray-500 hover:text-gray-700">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize user info
+            initUserInfo();
+            setupLogout();
+
+            // Setup alert interactions
+            document.querySelectorAll('#emergency-alerts button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.target.closest('div[class*="border-l-4"]').remove();
+                });
+            });
+
+            document.getElementById('clear-alerts').addEventListener('click', () => {
+                document.getElementById('emergency-alerts').innerHTML = 
+                    '<p class="text-gray-500 text-center py-4">No active alerts</p>';
+            });
+        });
+    </script>
+</body>
+</html>
